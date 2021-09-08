@@ -146,6 +146,83 @@ extension CLLocationCoordinate2D {
 }
 
 extension CLLocationCoordinate2D {
+	/// Returns the coordinates of waypoints spaced at `spacing` along the geodesic from `self` *A* to `other` *B*.
+	/// - parameter spacing: The desired waypoint spacing, in meters.
+	/// - parameter other: The ending coordinate.
+	/// - returns: An array of waypoint  coordinates.
+	public func waypoints(spacedAtDistance spacing: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> [CLLocationCoordinate2D] {
+		var l = geod_geodesicline()
+		geod_inverseline(&l, &Self.wgs84, latitude, longitude, other.latitude, other.longitude, 0)
+		var lat: Double = 0
+		var long: Double = 0
+		var results: [CLLocationCoordinate2D] = []
+		for distance in stride(from: 0, to: l.s13, by: spacing) {
+			geod_position(&l, distance, &lat, &long, nil)
+			results.append(CLLocationCoordinate2D(latitude: lat, longitude: long))
+		}
+		return results
+	}
+
+	/// Returns the coordinates and azimuths of waypoints spaced at `spacing` along the geodesic from `self` *A* to `other` *B*.
+	/// - parameter spacing: The desired waypoint spacing, in meters.
+	/// - parameter other: The ending coordinate.
+	/// - returns: An array of tuples containing the the coordinate and forward azimuth of the waypoints.
+	public func waypointsAndForwardAzimuths(spacedAtDistance spacing: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> [(C: CLLocationCoordinate2D, α3: Double)] {
+		var l = geod_geodesicline()
+		geod_inverseline(&l, &Self.wgs84, latitude, longitude, other.latitude, other.longitude, 0)
+		var lat: Double = 0
+		var long: Double = 0
+		var α3: Double = 0
+		var results: [(CLLocationCoordinate2D, Double)] = []
+		for distance in stride(from: 0, to: l.s13, by: spacing) {
+			geod_position(&l, distance, &lat, &long, &α3)
+			results.append((CLLocationCoordinate2D(latitude: lat, longitude: long), α3))
+		}
+		return results
+	}
+
+	/// Returns the coordinates of `count` waypoints evenly spaced along the geodesic from `self` *A* to `other` *B*.
+	/// - parameter count: The desired number of waypoints.
+	/// - parameter other: The ending coordinate.
+	/// - returns: An array of waypoint coordinates.
+	public func waypoints(count: Int, alongGeodesicTo other: CLLocationCoordinate2D) -> [CLLocationCoordinate2D] {
+		precondition(count > 0, "Waypoint count must be positive")
+		var l = geod_geodesicline()
+		geod_inverseline(&l, &Self.wgs84, latitude, longitude, other.latitude, other.longitude, 0)
+		var lat: Double = 0
+		var long: Double = 0
+		var α3: Double = 0
+		var results: [CLLocationCoordinate2D] = []
+		let increment = l.s13 / Double(count + 1)
+		for distance in stride(from: increment, to: l.s13, by: increment) {
+			geod_position(&l, distance, &lat, &long, &α3)
+			results.append(CLLocationCoordinate2D(latitude: lat, longitude: long))
+		}
+		return results
+	}
+
+	/// Returns the coordinates and azimuths of `count` waypoints evenly spaced along the geodesic from `self` *A* to `other` *B*.
+	/// - parameter count: The desired number of waypoints.
+	/// - parameter other: The ending coordinate.
+	/// - returns: An array of tuples containing the the coordinate and forward azimuth of the waypoints.
+	public func waypointsAndForwardAzimuths(count: Int, alongGeodesicTo other: CLLocationCoordinate2D) -> [(C: CLLocationCoordinate2D, α3: Double)] {
+		precondition(count > 0, "Waypoint count must be positive")
+		var l = geod_geodesicline()
+		geod_inverseline(&l, &Self.wgs84, latitude, longitude, other.latitude, other.longitude, 0)
+		var lat: Double = 0
+		var long: Double = 0
+		var α3: Double = 0
+		var results: [(CLLocationCoordinate2D, Double)] = []
+		let increment = l.s13 / Double(count + 1)
+		for distance in stride(from: increment, to: l.s13, by: increment) {
+			geod_position(&l, distance, &lat, &long, &α3)
+			results.append((CLLocationCoordinate2D(latitude: lat, longitude: long), α3))
+		}
+		return results
+	}
+}
+
+extension CLLocationCoordinate2D {
 	/// The WGS-84 ellipsoid.
 	static var wgs84: geod_geodesic = {
 		var g = geod_geodesic()
