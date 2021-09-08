@@ -90,35 +90,58 @@ extension CLLocationCoordinate2D {
 }
 
 extension CLLocationCoordinate2D {
-	/// Returns the coordinate at `distance` along the geodesic from `self` to `other`.
+	/// Returns the coordinate *C* at `distance` *s13* along the geodesic from `self` *A* to `other` *B*.
 	/// - parameter distance: The distance from `self` where the coordinate should be located, in meters.
 	/// - parameter other: The ending coordinate.
 	/// - returns: The  coordinate at `distance`.
 	public func coordinate(atDistance distance: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
-		var α1: Double = 0
-		geod_inverse(&Self.wgs84, latitude, longitude, other.latitude, other.longitude, nil, &α1, nil)
-
+		var l = geod_geodesicline()
+		geod_inverseline(&l, &Self.wgs84, latitude, longitude, other.latitude, other.longitude, 0)
 		var lat: Double = 0
 		var long: Double = 0
-		geod_direct(&Self.wgs84, latitude, longitude, α1, distance, &lat, &long, nil)
-
+		geod_position(&l, distance, &lat, &long, nil)
 		return CLLocationCoordinate2D(latitude: lat, longitude: long)
 	}
 
-	/// Returns the coordinate at `fraction` of the distance on the geodesic from `self` to `other`.
+	/// Returns the coordinate *C* and azimuth *α3* at `distance` *s13* along the geodesic from `self` *A* to `other` *B*.
+	/// - parameter distance: The distance from `self` where the coordinate should be located, in meters.
+	/// - parameter other: The ending coordinate.
+	/// - returns: A tuple containing the the coordinate and forward azimuth in degrees at `distance`.
+	public func coordinateAndForwardAzimuth(atDistance distance: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> (C: CLLocationCoordinate2D, α3: Double) {
+		var l = geod_geodesicline()
+		geod_inverseline(&l, &Self.wgs84, latitude, longitude, other.latitude, other.longitude, 0)
+		var lat: Double = 0
+		var long: Double = 0
+		var α3: Double = 0
+		geod_position(&l, distance, &lat, &long, &α3)
+		return (CLLocationCoordinate2D(latitude: lat, longitude: long), α3)
+	}
+
+	/// Returns the coordinate at `fraction` of the distance *s13* along the geodesic from `self` *A* to `other` *B*.
 	/// - parameter fraction: The fraction of the distance between `self` and `other` where the coordinate should be located.
 	/// - parameter other: The ending coordinate.
 	/// - returns: The  coordinate at `fraction` of the distance to `other`.
-	public func coordinate(atFractionOfDistance fraction: Double, to other: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
-		var s: Double = 0
-		var α1: Double = 0
-		geod_inverse(&Self.wgs84, latitude, longitude, other.latitude, other.longitude, &s, &α1, nil)
-
+	public func coordinate(atFractionOfDistance fraction: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
+		var l = geod_geodesicline()
+		geod_inverseline(&l, &Self.wgs84, latitude, longitude, other.latitude, other.longitude, 0)
 		var lat: Double = 0
 		var long: Double = 0
-		geod_direct(&Self.wgs84, latitude, longitude, α1, s * fraction, &lat, &long, nil)
-
+		geod_position(&l, l.s13 * fraction, &lat, &long, nil)
 		return CLLocationCoordinate2D(latitude: lat, longitude: long)
+	}
+
+	/// Returns the coordinate *C* and azimuth *α3* at `fraction` of the distance *s13* along the geodesic from `self` *A* to `other` *B*.
+	/// - parameter fraction: The fraction of the distance between `self` and `other` where the coordinate should be located.
+	/// - parameter other: The ending coordinate.
+	/// - returns: A tuple containing the the coordinate and forward azimuth in degrees at `fraction` of the distance to `other`.
+	public func coordinateAndForwardAzimuth(atFractionOfDistance fraction: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> (C: CLLocationCoordinate2D, α3: Double) {
+		var l = geod_geodesicline()
+		geod_inverseline(&l, &Self.wgs84, latitude, longitude, other.latitude, other.longitude, 0)
+		var lat: Double = 0
+		var long: Double = 0
+		var α3: Double = 0
+		geod_position(&l, l.s13 * fraction, &lat, &long, &α3)
+		return (CLLocationCoordinate2D(latitude: lat, longitude: long), α3)
 	}
 }
 
