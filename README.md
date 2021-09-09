@@ -1,6 +1,6 @@
 # Geodesic
 
-A `CLLocationCoordinate2D` extension for geodesic calculations.
+`CLLocationCoordinate2D` extensions for geodesic calculations.
 
 ```swift
 let lax = CLLocationCoordinate2D(latitude: 33.9424964, longitude: -118.4080486)
