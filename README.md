@@ -10,4 +10,4 @@ let distance = lax.distanceTo(jfk)
 ```
 ## License
 
-Geodesic is released under the [MIT License](https://github.com/sbooth/Geodesic/blob/master/LICENSE.txt).
+Geodesic is released under the [MIT License](https://github.com/sbooth/Geodesic/blob/main/LICENSE.txt).
