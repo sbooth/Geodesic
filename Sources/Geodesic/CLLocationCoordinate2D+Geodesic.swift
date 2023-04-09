@@ -1,5 +1,5 @@
 //
-// Copyright © 2021 Stephen F. Booth <me@sbooth.org>
+// Copyright © 2021-2023 Stephen F. Booth <me@sbooth.org>
 // Part of https://github.com/sbooth/Geodesic
 // MIT license
 //
