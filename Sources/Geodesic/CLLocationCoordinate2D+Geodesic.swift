@@ -91,7 +91,7 @@ extension CLLocationCoordinate2D {
 
 extension CLLocationCoordinate2D {
 	/// Returns the coordinate *C* at `distance` *s13* along the geodesic from `self` *A* to `other` *B*.
-	/// - parameter distance: The distance from `self` where the coordinate should be located, in meters.
+	/// - parameter distance: The distance from `self` *A* where the coordinate should be located, in meters.
 	/// - parameter other: The destination coordinate *B*.
 	/// - returns: The coordinate at `distance` *s13*.
 	public func coordinate(atDistance distance: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
@@ -104,7 +104,7 @@ extension CLLocationCoordinate2D {
 	}
 
 	/// Returns the coordinate *C* and azimuth *α3* at `distance` *s13* along the geodesic from `self` *A* to `other` *B*.
-	/// - parameter distance: The distance from `self` where the coordinate should be located, in meters.
+	/// - parameter distance: The distance from `self` *A* where the coordinate should be located, in meters.
 	/// - parameter other: The destination coordinate *B*.
 	/// - returns: A tuple containing the the coordinate *C* and forward azimuth *α3* in degrees at `distance`.
 	public func coordinateAndForwardAzimuth(atDistance distance: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> (C: CLLocationCoordinate2D, α3: Double) {
@@ -118,7 +118,7 @@ extension CLLocationCoordinate2D {
 	}
 
 	/// Returns the coordinate *C* at `fraction` of the distance *s13* along the geodesic from `self` *A* to `other` *B*.
-	/// - parameter fraction: The fraction of the distance between `self` and `other` where the coordinate should be located.
+	/// - parameter fraction: The fraction of the distance between `self` *A* and `other` *B* where the coordinate should be located.
 	/// - parameter other: The destination coordinate *B*.
 	/// - returns: The coordinate *C* at `fraction` of the distance *s13* to `other`.
 	public func coordinate(atFractionOfDistance fraction: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> CLLocationCoordinate2D {
@@ -131,7 +131,7 @@ extension CLLocationCoordinate2D {
 	}
 
 	/// Returns the coordinate *C* and azimuth *α3* at `fraction` of the distance *s13* along the geodesic from `self` *A* to `other` *B*.
-	/// - parameter fraction: The fraction of the distance between `self` and `other` where the coordinate should be located.
+	/// - parameter fraction: The fraction of the distance between `self` *A* and `other` *B* where the coordinate should be located.
 	/// - parameter other: The destination coordinate *B*.
 	/// - returns: A tuple containing the the coordinate *C* and forward azimuth *α3* in degrees at `fraction` of the distance *s13* to `other`.
 	public func coordinateAndForwardAzimuth(atFractionOfDistance fraction: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> (C: CLLocationCoordinate2D, α3: Double) {
