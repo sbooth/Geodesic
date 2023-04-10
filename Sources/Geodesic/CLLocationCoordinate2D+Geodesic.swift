@@ -16,7 +16,7 @@ extension CLLocationCoordinate2D {
 	/// Returns the coordinate *B* at `azimuth` *α1* and `distance` *s12* from `self` *A*.
 	/// - parameter azimuth: The azimuth *α1* at `self` *A* in degrees.
 	/// - parameter distance: The distance *s12* in meters.
-	/// - returns: The coordinate *B* at `azimuth` and `distance` from `self`.
+	/// - returns: The coordinate *B* at `azimuth` and `distance` from `self` *A*.
 	public func coordinate(atAzimuth azimuth: Double, distance: Double) -> CLLocationCoordinate2D {
 		var lat: Double = 0
 		var long: Double = 0
@@ -37,7 +37,7 @@ extension CLLocationCoordinate2D {
 	/// Returns the coordinate *B* and azimuth *α2* at `azimuth` *α1* and `distance` *s12* from `self` *A*.
 	/// - parameter azimuth: The azimuth *α1* at `self` *A* in degrees.
 	/// - parameter distance: The distance *s12* in meters.
-	/// - returns: A tuple containing the the coordinate *B* and forward azimuth *α2* in degrees at `azimuth` and `distance` from `self`.
+	/// - returns: A tuple containing the the coordinate *B* and forward azimuth *α2* in degrees at `azimuth` and `distance` from `self` *A*.
 	public func coordinateAndForwardAzimuth(atAzimuth azimuth: Double, distance: Double) -> (B: CLLocationCoordinate2D, α2: Double) {
 		var lat: Double = 0
 		var long: Double = 0
