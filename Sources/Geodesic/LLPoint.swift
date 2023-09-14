@@ -7,12 +7,27 @@ import CoreLocation
 #endif
 
 /// Stores WGS-84 geodesic info.
-private struct Geodesic {
+public struct Geodesic {
     static var wgs84: geod_geodesic = {
         var g = geod_geodesic()
         geod_init(&g, 6378137, 1 / 298.257223563)
         return g
     }()
+    public static var useCompassAzimuths: Bool = false
+}
+
+extension Double {
+    var asAzimuth: Double {
+        Geodesic.useCompassAzimuths ? self.inCompassForm : self
+    }
+    /// Convert returned azimuths to [0-360) degree interval.
+    var inCompassForm: Double {
+        var deg = self
+        while deg < 0 {
+            deg += 360
+        }
+        return deg.truncatingRemainder(dividingBy: 360)
+    }
 }
 
 /// Protocol suitable for geodesic work.
@@ -35,6 +50,7 @@ public struct LatLonPoint: LLPoint {
     
 }
 
+
 #if canImport(CoreLocation)
 public extension LLPoint {
     var asCoreLocation: CLLocationCoordinate2D {
@@ -50,7 +66,7 @@ public extension [LatLonPoint] {
 #endif
 
 public extension LLPoint {
-
+    
     // MARK: - Direct solutions.
     
     /// Returns the coordinate *B* at `azimuth` *a1* and `distance` *s12* from `self` *A*.
@@ -71,7 +87,7 @@ public extension LLPoint {
     func forwardAzimuth(atAzimuth azimuth: Double, distance: Double) -> Double {
         var a2: Double = 0
         geod_direct(&Geodesic.wgs84, latitude, longitude, azimuth, distance, nil, nil, &a2)
-        return a2
+        return a2.asAzimuth
     }
 
     /// Returns the coordinate *B* and azimuth *a2* at `azimuth` *a1* and `distance` *s12* from `self` *A*.
@@ -83,7 +99,7 @@ public extension LLPoint {
         var long: Double = 0
         var a2: Double = 0
         geod_direct(&Geodesic.wgs84, latitude, longitude, azimuth, distance, &lat, &long, &a2)
-        return (LatLonPoint(latitude: lat, longitude: long), a2)
+        return (LatLonPoint(latitude: lat, longitude: long), a2.asAzimuth)
     }
     
     // MARK: - Inverse solutions.
@@ -103,7 +119,7 @@ public extension LLPoint {
     func initialTrueCourseTo(_ other: any LLPoint) -> Double {
         var a1: Double = 0
         geod_inverse(&Geodesic.wgs84, latitude, longitude, other.latitude, other.longitude, nil, &a1, nil)
-        return a1
+        return a1.asAzimuth
     }
 
     /// Returns the azimuth *a2* between `self` *A* and `other` *B* in degrees.
@@ -112,7 +128,7 @@ public extension LLPoint {
     func finalTrueCourseTo(_ other: any LLPoint) -> Double {
         var a2: Double = 0
         geod_inverse(&Geodesic.wgs84, latitude, longitude, other.latitude, other.longitude, nil, nil, &a2)
-        return a2
+        return a2.asAzimuth
     }
 
     /// Returns the distance *s12* , the initial true course *a1*, and the final true course *a2* between `self` *A* and `other` *B*.
@@ -123,7 +139,7 @@ public extension LLPoint {
         var a1: Double = 0
         var a2: Double = 0
         geod_inverse(&Geodesic.wgs84, latitude, longitude, other.latitude, other.longitude, &s12, &a1, &a2)
-        return (s12, a1, a2)
+        return (s12, a1.asAzimuth, a2.asAzimuth)
     }
     
     // MARK: - Coordinates along geodesics.
@@ -152,7 +168,7 @@ public extension LLPoint {
         var long: Double = 0
         var a3: Double = 0
         geod_position(&l, distance, &lat, &long, &a3)
-        return (LatLonPoint(latitude: lat, longitude: long), a3)
+        return (LatLonPoint(latitude: lat, longitude: long), a3.asAzimuth)
     }
 
     /// Returns the coordinate *C* at `fraction` of the distance *s13* along the geodesic from `self` *A* to `other` *B*.
@@ -179,7 +195,7 @@ public extension LLPoint {
         var long: Double = 0
         var a3: Double = 0
         geod_position(&l, l.s13 * fraction, &lat, &long, &a3)
-        return (LatLonPoint(latitude: lat, longitude: long), a3)
+        return (LatLonPoint(latitude: lat, longitude: long), a3.asAzimuth)
     }
     
     // MARK: - Waypoint creation
@@ -214,7 +230,7 @@ public extension LLPoint {
         var results: [(LatLonPoint, Double)] = []
         for distance in stride(from: 0, to: l.s13, by: spacing) {
             geod_position(&l, distance, &lat, &long, &a3)
-            results.append((LatLonPoint(latitude: lat, longitude: long), a3))
+            results.append((LatLonPoint(latitude: lat, longitude: long), a3.asAzimuth))
         }
         return results
     }
@@ -254,7 +270,7 @@ public extension LLPoint {
         let increment = l.s13 / Double(count + 1)
         for distance in stride(from: increment, to: l.s13, by: increment) {
             geod_position(&l, distance, &lat, &long, &a3)
-            results.append((LatLonPoint(latitude: lat, longitude: long), a3))
+            results.append((LatLonPoint(latitude: lat, longitude: long), a3.asAzimuth))
         }
         return results
     }
