@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "CGeodesic",
+        "repositoryURL": "https://github.com/sbooth/CGeodesic",
+        "state": {
+          "branch": null,
+          "revision": "21e5af22a355289ddb049b303fb4a04b33b6de79",
+          "version": "2.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
