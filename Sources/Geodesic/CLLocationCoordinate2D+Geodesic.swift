@@ -23,29 +23,29 @@ extension LLPoint {
 }
 
 extension CLLocationCoordinate2D: LLPoint {
-    /// Returns the coordinate *B* at `azimuth` *α1* and `distance` *s12* from `self` *A*.
-    /// - parameter azimuth: The azimuth *α1* at `self` *A* in degrees.
+    /// Returns the coordinate *B* at `azimuth` *a1* and `distance` *s12* from `self` *A*.
+    /// - parameter azimuth: The azimuth *a1* at `self` *A* in degrees.
     /// - parameter distance: The distance *s12* in meters.
     /// - returns: The coordinate *B* at `azimuth` and `distance` from `self` *A*.
     public func coordinate(atAzimuth azimuth: Double, distance: Double) -> CLLocationCoordinate2D {
         (self as LLPoint).coordinate(atAzimuth: azimuth, distance: distance).toCoreLocationCoordinate
     }
 
-    /// Returns the forward azimuth *α2* at `azimuth` *α1* and `distance` *s12* from `self` *A*.
-    /// - parameter azimuth: The azimuth *α1* at `self` *A* in degrees.
+    /// Returns the forward azimuth *a2* at `azimuth` *a1* and `distance` *s12* from `self` *A*.
+    /// - parameter azimuth: The azimuth *a1* at `self` *A* in degrees.
     /// - parameter distance: The distance *s12* in meters.
-    /// - returns: The forward azimuth *α2* in degrees.
+    /// - returns: The forward azimuth *a2* in degrees.
     public func forwardAzimuth(atAzimuth azimuth: Double, distance: Double) -> Double {
         (self as LLPoint).forwardAzimuth(atAzimuth: azimuth, distance: distance)
     }
 
-    /// Returns the coordinate *B* and azimuth *α2* at `azimuth` *α1* and `distance` *s12* from `self` *A*.
-    /// - parameter azimuth: The azimuth *α1* at `self` *A* in degrees.
+    /// Returns the coordinate *B* and azimuth *a2* at `azimuth` *a1* and `distance` *s12* from `self` *A*.
+    /// - parameter azimuth: The azimuth *a1* at `self` *A* in degrees.
     /// - parameter distance: The distance *s12* in meters.
-    /// - returns: A tuple containing the the coordinate *B* and forward azimuth *α2* in degrees at `azimuth` and `distance` from `self` *A*.
-    public func coordinateAndForwardAzimuth(atAzimuth azimuth: Double, distance: Double) -> (B: CLLocationCoordinate2D, α2: Double) {
+    /// - returns: A tuple containing the the coordinate *B* and forward azimuth *a2* in degrees at `azimuth` and `distance` from `self` *A*.
+    public func coordinateAndForwardAzimuth(atAzimuth azimuth: Double, distance: Double) -> (B: CLLocationCoordinate2D, a2: Double) {
         let result = (self as LLPoint).coordinateAndForwardAzimuth(atAzimuth: azimuth, distance: distance)
-        return (B: result.B.asCoreLocation, α2: result.α2)
+        return (B: result.B.asCoreLocation, a2: result.a2)
     }
 }
 
@@ -59,24 +59,24 @@ extension CLLocationCoordinate2D {
         (self as LLPoint).distanceTo(other)
     }
 
-    /// Returns the azimuth *α1* between `self` *A* and `other` *B* in degrees.
+    /// Returns the azimuth *a1* between `self` *A* and `other` *B* in degrees.
     /// - parameter other: The destination coordinate *B*.
-    /// - returns: The initial true course *α1* in degrees.
+    /// - returns: The initial true course *a1* in degrees.
     public func initialTrueCourseTo(_ other: CLLocationCoordinate2D) -> Double {
         (self as LLPoint).initialTrueCourseTo(other)
     }
 
-    /// Returns the azimuth *α2* between `self` *A* and `other` *B* in degrees.
+    /// Returns the azimuth *a2* between `self` *A* and `other` *B* in degrees.
     /// - parameter other: The destination coordinate *B*.
-    /// - returns: The final true course *α2* in degrees.
+    /// - returns: The final true course *a2* in degrees.
     public func finalTrueCourseTo(_ other: CLLocationCoordinate2D) -> Double {
         (self as LLPoint).finalTrueCourseTo(other)
     }
 
-    /// Returns the distance *s12* , the initial true course *α1*, and the final true course *α2* between `self` *A* and `other` *B*.
+    /// Returns the distance *s12* , the initial true course *a1*, and the final true course *a2* between `self` *A* and `other` *B*.
     /// - parameter other: The destination coordinate *B*.
-    /// - returns: A tuple containing the distance *s12* in meters, the initial true course *α1* in degrees, and the final true course *α2* in degrees.
-    public func distanceAndCoursesTo(_ other: CLLocationCoordinate2D) -> (s12: Double, α1: Double, α2: Double) {
+    /// - returns: A tuple containing the distance *s12* in meters, the initial true course *a1* in degrees, and the final true course *a2* in degrees.
+    public func distanceAndCoursesTo(_ other: CLLocationCoordinate2D) -> (s12: Double, a1: Double, a2: Double) {
         (self as LLPoint).distanceAndCoursesTo(other)
     }
 }
@@ -90,13 +90,13 @@ extension CLLocationCoordinate2D {
         (self as LLPoint).coordinate(atDistance: distance, alongGeodesicTo: other).asCoreLocation
     }
 
-    /// Returns the coordinate *C* and azimuth *α3* at `distance` *s13* along the geodesic from `self` *A* to `other` *B*.
+    /// Returns the coordinate *C* and azimuth *a3* at `distance` *s13* along the geodesic from `self` *A* to `other` *B*.
     /// - parameter distance: The distance from `self` *A* where the coordinate should be located, in meters.
     /// - parameter other: The destination coordinate *B*.
-    /// - returns: A tuple containing the the coordinate *C* and forward azimuth *α3* in degrees at `distance`.
-    public func coordinateAndForwardAzimuth(atDistance distance: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> (C: CLLocationCoordinate2D, α3: Double) {
+    /// - returns: A tuple containing the the coordinate *C* and forward azimuth *a3* in degrees at `distance`.
+    public func coordinateAndForwardAzimuth(atDistance distance: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> (C: CLLocationCoordinate2D, a3: Double) {
         let result = (self as LLPoint).coordinateAndForwardAzimuth(atDistance: distance, alongGeodesicTo: other)
-        return (result.C.asCoreLocation, result.α3)
+        return (result.C.asCoreLocation, result.a3)
     }
 
     /// Returns the coordinate *C* at `fraction` of the distance *s13* along the geodesic from `self` *A* to `other` *B*.
@@ -107,13 +107,13 @@ extension CLLocationCoordinate2D {
         (self as LLPoint).coordinate(atFractionOfDistance: fraction, alongGeodesicTo: other).asCoreLocation
     }
 
-    /// Returns the coordinate *C* and azimuth *α3* at `fraction` of the distance *s13* along the geodesic from `self` *A* to `other` *B*.
+    /// Returns the coordinate *C* and azimuth *a3* at `fraction` of the distance *s13* along the geodesic from `self` *A* to `other` *B*.
     /// - parameter fraction: The fraction of the distance between `self` *A* and `other` *B* where the coordinate should be located.
     /// - parameter other: The destination coordinate *B*.
-    /// - returns: A tuple containing the the coordinate *C* and forward azimuth *α3* in degrees at `fraction` of the distance *s13* to `other`.
-    public func coordinateAndForwardAzimuth(atFractionOfDistance fraction: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> (C: CLLocationCoordinate2D, α3: Double) {
+    /// - returns: A tuple containing the the coordinate *C* and forward azimuth *a3* in degrees at `fraction` of the distance *s13* to `other`.
+    public func coordinateAndForwardAzimuth(atFractionOfDistance fraction: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> (C: CLLocationCoordinate2D, a3: Double) {
         let result = (self as LLPoint).coordinateAndForwardAzimuth(atFractionOfDistance: fraction, alongGeodesicTo: other)
-        return (result.C.asCoreLocation, result.α3)
+        return (result.C.asCoreLocation, result.a3)
     }
 }
 
@@ -130,9 +130,9 @@ extension CLLocationCoordinate2D {
     /// - parameter spacing: The desired waypoint spacing, in meters.
     /// - parameter other: The destination coordinate *B*.
     /// - returns: An array of tuples containing the the coordinate and forward azimuth of the waypoints.
-    public func waypointsAndForwardAzimuths(spacedAtDistance spacing: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> [(C: CLLocationCoordinate2D, α3: Double)] {
+    public func waypointsAndForwardAzimuths(spacedAtDistance spacing: Double, alongGeodesicTo other: CLLocationCoordinate2D) -> [(C: CLLocationCoordinate2D, a3: Double)] {
         let results = (self as LLPoint).waypointsAndForwardAzimuths(spacedAtDistance: spacing, alongGeodesicTo: other)
-        return results.map{($0.C.asCoreLocation, $0.α3)}
+        return results.map{($0.C.asCoreLocation, $0.a3)}
     }
 
     /// Returns the coordinates of `count` waypoints evenly spaced along the geodesic from `self` *A* to `other` *B*.
@@ -147,9 +147,9 @@ extension CLLocationCoordinate2D {
     /// - parameter count: The desired number of waypoints.
     /// - parameter other: The destination coordinate *B*.
     /// - returns: An array of tuples containing the the coordinate and forward azimuth of the waypoints.
-    public func waypointsAndForwardAzimuths(count: Int, alongGeodesicTo other: CLLocationCoordinate2D) -> [(C: CLLocationCoordinate2D, α3: Double)] {
+    public func waypointsAndForwardAzimuths(count: Int, alongGeodesicTo other: CLLocationCoordinate2D) -> [(C: CLLocationCoordinate2D, a3: Double)] {
         let results = (self as LLPoint).waypointsAndForwardAzimuths(count: count, alongGeodesicTo: other)
-        return results.map{($0.C.asCoreLocation, $0.α3)}
+        return results.map{($0.C.asCoreLocation, $0.a3)}
     }
 }
 #endif
