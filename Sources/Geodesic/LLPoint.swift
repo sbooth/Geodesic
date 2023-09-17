@@ -44,6 +44,11 @@ public struct LatLonPoint: LLPoint {
         self.longitude = longitude
     }
     
+    public init(from pt: any LLPoint) {
+        self.latitude = pt.latitude
+        self.longitude = pt.longitude
+    }
+    
     public var latitude: Double
     public var longitude: Double
     
