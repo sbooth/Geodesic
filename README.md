@@ -20,7 +20,7 @@ Add a package dependency to https://github.com/sbooth/Geodesic in Xcode.
 
 ### Manual or Custom Build
 
-1. Clone the [CAAudioHardware](https://github.com/sbooth/Geodesic) repository.
+1. Clone the [Geodesic](https://github.com/sbooth/Geodesic) repository.
 2. `swift build`.
 
 ## License
