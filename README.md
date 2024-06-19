@@ -11,6 +11,18 @@ let jfk = CLLocationCoordinate2D(latitude: 40.6399278, longitude: -73.7786925)
 let distance = lax.distanceTo(jfk)
 // distance is approx. 3,982,961 m
 ```
+
+## Installation
+
+### Swift Package Manager
+
+Add a package dependency to https://github.com/sbooth/Geodesic in Xcode.
+
+### Manual or Custom Build
+
+1. Clone the [CAAudioHardware](https://github.com/sbooth/Geodesic) repository.
+2. `swift build`.
+
 ## License
 
 Geodesic is released under the [MIT License](https://github.com/sbooth/Geodesic/blob/main/LICENSE.txt).
