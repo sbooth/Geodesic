@@ -1,5 +1,8 @@
 # Geodesic
 
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fsbooth%2FGeodesic%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/sbooth/Geodesic)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fsbooth%2FGeodesic%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/sbooth/Geodesic)
+
 `CLLocationCoordinate2D` extensions for solving geodesic problems on an ellipsoid model of the Earth.
 
 ```swift
