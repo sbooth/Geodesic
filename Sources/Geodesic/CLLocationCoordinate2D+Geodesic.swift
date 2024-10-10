@@ -175,3 +175,53 @@ extension CLLocationCoordinate2D {
 		return results
 	}
 }
+
+extension CLLocationCoordinate2D {
+	/// Returns the MGRS coordinates for `self` to the specified precision.
+	/// - parameter precision: The desired precision relative to 100 km, ranging from `-1...11`
+	/// - returns: The MGRS coordinates for `self`
+	/// - seealso: https://en.wikipedia.org/wiki/Military_Grid_Reference_System
+	///
+	/// The `precision` values have the following meanings:
+	///
+	/// Precision | Meaning
+	/// --- | ---
+	/// `-1` |  Grid Zone only
+	/// `0` | 100 km
+	/// `1` | 10 km
+	/// `2` | 1 km
+	/// `3` | 100 m
+	/// `4` | 10 m
+	/// `5` | 1 m
+	/// `6` | 1 dm
+	/// `7` | 1 cm
+	/// `8` | 1 mm
+	/// `9` | 0.0001 m
+	/// `10` | 0.00001 m
+	/// `11` | 1 µm
+	public func toMGRS(precision: Int = 2) -> String {
+		var zone: Int32 = 0
+		var northp: Bool = false
+		var x: GeographicLib.Math.real = 0
+		var y: GeographicLib.Math.real = 0
+		GeographicLib.UTMUPS.Forward(latitude, longitude, &zone, &northp, &x, &y)
+		var mgrs: std.string = ""
+		GeographicLib.MGRS.Forward(zone, northp, x, y, latitude, Int32(precision), &mgrs)
+		return String(mgrs)
+	}
+
+	/// Creates a location coordinate object with the specified MGRS coordinates.
+	/// - parameter mgrs: The MGRS coordinates.
+	public init(mgrs: String) {
+		var zone: Int32 = 0
+		var prec: Int32 = 0
+		var northp: Bool = false
+		var x: GeographicLib.Math.real = 0
+		var y: GeographicLib.Math.real = 0
+		GeographicLib.MGRS.Reverse(std.string(mgrs), &zone, &northp, &x, &y, &prec)
+		var lat: GeographicLib.Math.real = 0
+		var long: GeographicLib.Math.real = 0
+		GeographicLib.UTMUPS.Reverse(zone, northp, x, y, &lat, &long)
+		self.init(latitude: lat, longitude: long)
+	}
+}
