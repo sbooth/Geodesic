@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "cxxgeographiclib",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sbooth/CXXGeographicLib",
+      "state" : {
+        "revision" : "651a20861ea8725a33e0e9d7906ff1a093f6f238",
+        "version" : "2.4.0"
+      }
+    }
+  ],
+  "version" : 2
+}
