@@ -182,24 +182,24 @@ extension CLLocationCoordinate2D {
 	/// - returns: The MGRS coordinates for `self`
 	/// - seealso: https://en.wikipedia.org/wiki/Military_Grid_Reference_System
 	///
-	/// The `precision` values have the following meanings:
+	/// The values for `precision` have the following meanings:
 	///
-	/// Precision | Meaning
-	/// --- | ---
-	/// `-1` |  Grid Zone only
-	/// `0` | 100 km
-	/// `1` | 10 km
-	/// `2` | 1 km
-	/// `3` | 100 m
-	/// `4` | 10 m
-	/// `5` | 1 m
+	/// Value | Precision Level | Example
+	/// --- | --- | ---
+	/// `-1` |  Grid zone designator | 4Q
+	/// `0` | 100 km | 4Q FJ
+	/// `1` | 10 km | 4Q FJ 1 6
+	/// `2` | 1 km | 4Q FJ 12 67
+	/// `3` | 100 m | 4Q FJ 123 678
+	/// `4` | 10 m | 4Q FJ 1234 6789
+	/// `5` | 1 m | 4Q FJ 12345 67890
 	/// `6` | 1 dm
 	/// `7` | 1 cm
 	/// `8` | 1 mm
 	/// `9` | 0.0001 m
 	/// `10` | 0.00001 m
 	/// `11` | 1 µm
-	public func toMGRS(precision: Int = 2) -> String {
+	public func mgrs(precision: Int = 2) -> String {
 		var zone: Int32 = 0
 		var northp: Bool = false
 		var x: GeographicLib.Math.real = 0
