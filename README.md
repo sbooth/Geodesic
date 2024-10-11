@@ -18,6 +18,9 @@ let distance = lax.distanceTo(jfk)
 
 Add a package dependency to https://github.com/sbooth/Geodesic in Xcode.
 
+> [!NOTE]
+> Targets using this package must enable [C++ interoperability](https://www.swift.org/documentation/cxx-interop/).
+
 ### Manual or Custom Build
 
 1. Clone the [Geodesic](https://github.com/sbooth/Geodesic) repository.
