@@ -25,7 +25,7 @@ let jfk = CLLocationCoordinate2D(latitude: 40.6399278, longitude: -73.7786925)
 }
 
 @Test func testMGRS() {
-	let mgrs = lax.mgrs(precision: 33)
+	let mgrs = lax.mgrs(precision: 3)
 	#expect(mgrs == "11SLT698566")
 	let coord = CLLocationCoordinate2D(mgrs: mgrs)
 	#expect(Swift.abs(coord.latitude - lax.latitude) < 0.001)
