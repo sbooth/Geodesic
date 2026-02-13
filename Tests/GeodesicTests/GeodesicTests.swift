@@ -1,28 +1,33 @@
 //
-// Copyright © 2021-2023 Stephen F. Booth <me@sbooth.org>
+// Copyright © 2021-2024 Stephen F. Booth <me@sbooth.org>
 // Part of https://github.com/sbooth/Geodesic
 // MIT license
 //
 
-import XCTest
+import Testing
 import CoreLocation
 @testable import Geodesic
 
-final class GeodesicTests: XCTestCase {
-	func testDistance() {
-		let lax = CLLocationCoordinate2D(latitude: 33.9424964, longitude: -118.4080486)
-		let jfk = CLLocationCoordinate2D(latitude: 40.6399278, longitude: -73.7786925)
-		let distance = lax.distanceTo(jfk)
-		XCTAssertEqual(distance, 3982961, accuracy: 1)
-	}
+let lax = CLLocationCoordinate2D(latitude: 33.9424964, longitude: -118.4080486)
+let jfk = CLLocationCoordinate2D(latitude: 40.6399278, longitude: -73.7786925)
 
-	func testMidpoints() {
-		let lax = CLLocationCoordinate2D(latitude: 33.9424964, longitude: -118.4080486)
-		let jfk = CLLocationCoordinate2D(latitude: 40.6399278, longitude: -73.7786925)
-		let midpoint = lax.coordinate(atFractionOfDistance: 0.5, alongGeodesicTo: jfk)
-		let waypoints = lax.waypoints(count: 1, alongGeodesicTo: jfk)
-		XCTAssertEqual(waypoints.count, 1)
-		XCTAssertEqual(midpoint.latitude, waypoints.first!.latitude, accuracy: 0.0001)
-		XCTAssertEqual(midpoint.longitude, waypoints.first!.longitude, accuracy: 0.0001)
-	}
+@Test func testDistance() {
+	let distance = lax.distanceTo(jfk)
+	#expect(Swift.abs(distance - 3982961) < 0.5)
+}
+
+@Test func testMidpoints() {
+	let midpoint = lax.coordinate(atFractionOfDistance: 0.5, alongGeodesicTo: jfk)
+	let waypoints = lax.waypoints(count: 1, alongGeodesicTo: jfk)
+	#expect(waypoints.count == 1)
+	#expect(Swift.abs(midpoint.latitude - waypoints.first!.latitude) < 0.001)
+	#expect(Swift.abs(midpoint.longitude - waypoints.first!.longitude) < 0.001)
+}
+
+@Test func testMGRS() {
+	let mgrs = lax.mgrs(precision: 3)
+	#expect(mgrs == "11SLT698566")
+	let coord = CLLocationCoordinate2D(mgrs: mgrs)
+	#expect(Swift.abs(coord.latitude - lax.latitude) < 0.001)
+	#expect(Swift.abs(coord.longitude - lax.longitude) < 0.001)
 }
